@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  keycloak:
+    build: ./keycloak
+    ports:
+      - 8080:8080
+      - 8443:8443
+    volumes:
+      - ./keycloak/import:/opt/keycloak/data/import
+  webapi:
+    build: ./webapi/dotnetapi
+    ports:
+      - 5000:8080
