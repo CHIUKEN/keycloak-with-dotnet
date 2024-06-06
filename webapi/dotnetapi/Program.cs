@@ -23,13 +23,12 @@ try
 
     builder.Services.AddEndpointsApiExplorer();
 
-    builder.Services.AddKeycloakWebApiAuthentication(builder.Configuration, o =>
-    {
-        o.RequireHttpsMetadata = false;
-    });
-
     builder.Services
-            .AddAuthorization();
+            .AddAuthorization()
+            .AddKeycloakWebApiAuthentication(builder.Configuration, o =>
+            {
+                o.RequireHttpsMetadata = false;
+            });
 
     builder.Services.AddSwaggerGen(c =>{
         c.AddSecurityDefinition(
