@@ -1,0 +1,80 @@
+{
+  "$schema": "https://www.krakend.io/schema/v3.json",
+  "version": 3,
+  "name": "KrakenD API Gateway",
+  "port": 8081,
+  "host": ["http://fake_api:8080"],
+  "timeout": "3000ms",
+  "cache_ttl": "300s",
+  "endpoints": [
+    {
+      "@comment": "endpoint with oauth2",
+      "endpoint": "/git/{user}",
+      "extra_config": {
+        "auth/validator": {
+          "alg": "RS256",
+          "cache": false,
+          "cache_duration": 3600,
+          "disable_jwk_security": true,
+          "operation_debug": true,
+          "issuer": "http://localhost:8080/realms/Test",
+          "jwk_url": "http://keycloak:8080/realms/Test/protocol/openid-connect/certs"
+        }
+      },
+      "backend": [
+        {
+          "host": ["https://api.github.com"],
+          "url_pattern": "/users/{user}",
+          "allow": [
+            "avatar_url",
+            "name",
+            "company",
+            "blog",
+            "location",
+            "mail",
+            "hireable",
+            "followers",
+            "public_repos",
+            "public_gists"
+          ],
+          "mapping": {
+            "blog": "website"
+          },
+          "group": "user"
+        },
+        {
+          "host": ["https://api.github.com"],
+          "url_pattern": "/users/{user}/repos",
+          "mapping": {
+            "collection": "repos"
+          },
+          "is_collection": true
+        }
+      ]
+    },
+    {
+      "@commit": "backend with auth client credentials",
+      "endpoint": "/getapidata",
+      "method": "GET",
+      "backend": [
+        {
+          "host": ["http://webapi:8080"],
+          "url_pattern": "/weatherforecast",
+          "method": "GET",
+          "is_collection": true,
+          "extra_config": {
+            "auth/client-credentials": {
+              "client_id": "api",
+              "client_secret": "JuHtuQLxyO1DUT1QyL1ifBpEzLY373NQ",
+              "token_url": "http://keycloak:8080/realms/Test/protocol/openid-connect/token",
+              "scopes": "openid",
+              "endpoint_params": {
+                "audience": ["api"]
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

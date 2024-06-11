@@ -79,7 +79,7 @@ try
         c.OAuthUsePkce();
     });
 
-    app.UseHttpsRedirection();
+    //app.UseHttpsRedirection();
 
     var summaries = new[]
     {

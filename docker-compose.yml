@@ -7,7 +7,17 @@ services:
       - 8443:8443
     volumes:
       - ./keycloak/import:/opt/keycloak/data/import
+
   webapi:
     build: ./webapi/dotnetapi
     ports:
       - 5000:8080
+    depends_on:
+      - keycloak
+
+  krakend:
+    build: ./krakend
+    ports:
+      - 8081:8081
+    depends_on:
+      - keycloak
