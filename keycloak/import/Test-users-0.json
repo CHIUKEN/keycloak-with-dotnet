@@ -18,6 +18,40 @@
     "notBefore" : 0,
     "groups" : [ ]
   }, {
+    "id" : "9f81e14a-4c6e-4cde-9f7e-7458660ee71c",
+    "username" : "service-account-realm-management",
+    "emailVerified" : false,
+    "createdTimestamp" : 1718087963334,
+    "enabled" : true,
+    "totp" : false,
+    "serviceAccountClientId" : "realm-management",
+    "credentials" : [ ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-test" ],
+    "clientRoles" : {
+      "realm-management" : [ "uma_protection" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "ea9b5b48-96a6-4926-adf9-c302f70ce548",
+    "username" : "service-account-web",
+    "emailVerified" : false,
+    "createdTimestamp" : 1719296924620,
+    "enabled" : true,
+    "totp" : false,
+    "serviceAccountClientId" : "web",
+    "credentials" : [ ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-test" ],
+    "clientRoles" : {
+      "web" : [ "uma_protection" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
     "id" : "198f8494-3fa7-4478-89fe-a8120e6c9c9a",
     "username" : "test",
     "firstName" : "test",
@@ -36,7 +70,7 @@
     } ],
     "disableableCredentialTypes" : [ ],
     "requiredActions" : [ ],
-    "realmRoles" : [ "default-roles-test", "manager_client_role" ],
+    "realmRoles" : [ "default-roles-test", "manager_client_role", "realm-role" ],
     "clientRoles" : {
       "realm-management" : [ "query-clients" ]
     },
