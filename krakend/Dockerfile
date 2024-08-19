@@ -1,4 +1,4 @@
-FROM devopsfaith/krakend:2.6.3 as builder
+FROM devopsfaith/krakend:2.6.3 AS builder
 
 COPY krakend.json /tmp/krakend.json
 
