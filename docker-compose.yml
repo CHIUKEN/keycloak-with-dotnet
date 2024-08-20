@@ -5,7 +5,7 @@ services:
     image: my_keycloak:latest
     container_name: keycloak
     hostname: keycloak
-    command: ['start',"--import-realm","--verbose","--optimized",]
+    command: ['start',"--import-realm","--verbose","--optimized"]
     ports:
       - 8080:8080
       - 8443:8443
@@ -19,14 +19,15 @@ services:
       - KC_PROXY_ADDRESS_FORWARDING=true
       - KC_DB=mssql
       - KC_DB_USERNAME=sa
-      - KC_DB_PASSWORD=Abcd1234
+      - KC_DB_PASSWORD=Abcd123!
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_HOSTNAME=keycloak
       - KC_DB_URL=jdbc:sqlserver://mssql:1433;databaseName=keycloak;trustServerCertificate=false;encrypt=false;
       - KC_LOG_LEVEL=INFO,org.infinispan:DEBUG,org.jgroups:DEBUG
-    depends_on:
-      mssql:
-        condition: service_healthy
+    # depends_on:
+    #   mssql:
+    #     condition: service_healthy
 
   webapi:
     build: ./webapi/dotnetapi
@@ -34,6 +35,8 @@ services:
     image: in_webapi:latest
     ports:
       - 5000:8080
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
     networks:
       - shared_network
     depends_on:
@@ -62,21 +65,22 @@ services:
     environment:
       - TZ=Asia/Taipei
       - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=Abcd1234
+      - MSSQL_SA_PASSWORD=Abcd123!
       - MSSQL_PID=Developer
-    healthcheck:
-      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Abcd1234 -Q 'SELECT 1'"]
-      interval: 10s
-      timeout: 10s
-      retries: 3
-
-  init-db:
-    image: mcr.microsoft.com/mssql-tools
-    depends_on:
-      - mssql
-    entrypoint: /bin/bash -c "sleep 30; /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P Abcd1234 -Q 'CREATE DATABASE keycloak;'"
-    networks:
-      - shared_network
+      - MSSQL_MEMORY_LIMIT=2GB
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Abcd123! -Q 'SELECT 1'"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 10
+  #     start_period: 90s
+  # init-db:
+  #   image: mcr.microsoft.com/mssql-tools
+  #   depends_on:
+  #     - mssql
+  #   entrypoint: /bin/bash -c "sleep 45; /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P Abcd123! -Q 'CREATE DATABASE keycloak;'"
+  #   networks:
+  #     - shared_network
 
 networks:
   shared_network:

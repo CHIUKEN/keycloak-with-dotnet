@@ -1,5 +1,6 @@
 using Keycloak.AuthServices.Authentication;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
@@ -15,6 +16,7 @@ Log.Logger = new LoggerConfiguration()
 
 try
 {
+    IdentityModelEventSource.ShowPII = true;
     builder.Services.AddSerilog((services, lc) => lc
     .ReadFrom.Configuration(builder.Configuration)
     .ReadFrom.Services(services)
