@@ -214,15 +214,15 @@ try
         app.UseForwardedHeaders(fordwardedHeaderOptions);
         app.UseExceptionHandler("/Home/Error");
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-        app.UseHsts();
+        //app.UseHsts();
 
-        app.Use((context, next) =>
-        {
-            context.Request.Scheme = "https";
-            return next(context);
-        });
+        // app.Use((context, next) =>
+        // {
+        //     context.Request.Scheme = "https";
+        //     return next(context);
+        // });
 
-        app.UseHttpsRedirection();
+        // app.UseHttpsRedirection();
     }
 
     app.UseCors(x => x

@@ -22,12 +22,11 @@ services:
       - KC_DB_PASSWORD=Abcd123!
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin
-      - KC_HOSTNAME=keycloak
+      - KC_HOSTNAME=localhost
       - KC_DB_URL=jdbc:sqlserver://mssql:1433;databaseName=keycloak;trustServerCertificate=false;encrypt=false;
       - KC_LOG_LEVEL=INFO,org.infinispan:DEBUG,org.jgroups:DEBUG
-    # depends_on:
-    #   mssql:
-    #     condition: service_healthy
+    depends_on:
+      - mssql
 
   in-auth:
     build: 
@@ -87,13 +86,13 @@ services:
   #     timeout: 5s
   #     retries: 10
   #     start_period: 90s
-  # init-db:
-  #   image: mcr.microsoft.com/mssql-tools
-  #   depends_on:
-  #     - mssql
-  #   entrypoint: /bin/bash -c "sleep 45; /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P Abcd123! -Q 'CREATE DATABASE keycloak;'"
-  #   networks:
-  #     - shared_network
+  init-db:
+    image: mcr.microsoft.com/mssql-tools
+    depends_on:
+      - mssql
+    entrypoint: /bin/bash -c "sleep 45; /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P Abcd123! -Q 'CREATE DATABASE keycloak;'"
+    networks:
+      - shared_network
 
 networks:
   shared_network:
