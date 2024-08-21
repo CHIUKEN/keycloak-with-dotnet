@@ -29,6 +29,19 @@ services:
     #   mssql:
     #     condition: service_healthy
 
+  in-auth:
+    build: 
+      context: ./in-auth
+      dockerfile: InAuthServer/Dockerfile
+    container_name: in-auth
+    image: in-auth:latest
+    ports:
+      - 8082:8080
+    networks:
+      - shared_network
+    depends_on:
+      - keycloak
+
   webapi:
     build: ./webapi/dotnetapi
     container_name: webapi
